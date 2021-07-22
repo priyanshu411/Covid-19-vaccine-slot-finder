@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="COVID-19 Vaccine slot finder,This website use Co-WIN Public API for find Vaccine slot easily,developed by Priyanshu Gupta">
+    <meta name="keywords" content="COVID-19,vaccine slot finder, vaccine">
+    <title>Slot Finder</title>
+
+    <!-- css file -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <!-- favicon -->
+
+    <link rel="shortcut icon" type="image/jpg"
+        href="https://www.keckmedicine.org/wp-content/uploads/2020/12/covid-vaccine.png" />
+
+</head>
+
+<body class="bg-light">
+    <header>
+        <div class="bg-info text-white text-center d-flex justify-content-center p-3">
+            <h2>COVID-19 Vaccine Slot Finder</h2>
+            <button type="button" class="btn btn-secondary rounded-circle font-monospace ms-3" data-bs-toggle="modal"
+                data-bs-target="#info">
+                &iukcy;
+            </button>
+        </div>
+    </header>
+
+    <!-- get detail to search start -->
+    <div class="container my-4">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center bg-primary text-white h4">
+                        Search Vaccine Slot
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="mb-3 col-lg-6">
+                                <label class="form-label" for="state">State</label>
+                                <select class="form-select" onchange="getDistrict(this.value)" id="state">
+                                    <option value="0">Select State</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 col-lg-6">
+                                <label class="form-label" for="district">District</label>
+                                <select class="form-select" id="district">
+                                    <option value="0">Select District</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="form-label" for="age">Age</label>
+                                <select class="form-select" id="age">
+                                    <option value="0">Select Age</option>
+                                    <option value="18">18+</option>
+                                    <option value="45">45+</option>
+                                </select>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="form-label" for="dose">Dose</label>
+                                <select class="form-select" id="dose">
+                                    <option value="0">Select dose</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label me-2" for="date">Date</label>
+                            <input type="date" class="form-control" id="date">
+                        </div>
+                        <div class="text-center">
+                            <button onclick="search()" type="button" class="btn btn-primary" id="search">search</button>
+                            <button onclick="stop_all()" type="button" class="btn btn-warning d-none" id="stop">Stop</button>
+                            <!-- spinner -->
+                            <div class="spinner-border text-dark d-none" id="loader">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <div class="text-danger fs-6" id="times">Search 0 times</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- get detail to search end -->
+
+    <!-- show data start -->
+
+    <div class="container-fluid px-3">
+        <h1 id="result" class="text-center">Available Slots</h1>
+        <div class="table-responsive-lg">
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th scope="col">Center Name</th>
+                        <th scope="col">Fees</th>
+                        <th scope="col">Vaccine</th>
+                        <th scope="col">Slots</th>
+                    </tr>
+                </thead>
+                <tbody id="data">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- show data end -->
+
+    <!-- info model start -->
+
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">About</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    This website use Co-WIN Public API for find Vaccine slot easily.Searches every 20 seconds After click search button.<br>
+                    <a class="text-decoration-none" href="https://apisetu.gov.in/public/marketplace/api/cowin"
+                        target="_blank">Co-WIN API</a><br>
+                    <span class="h6">Developed by :<a href="https://www.instagram.com/__priyanshu_gupta?r=nametag"
+                            class="text-decoration-none" target="_blank">Priyanshu Gupta</a></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- info model end -->
+
+    <!-- my script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script src="slot.js"></script>
+
+</body>
+
+</html>

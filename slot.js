@@ -1,0 +1,210 @@
+"use strict";
+window.onload = getState();
+alert("Searches every 20 seconds After click search button");
+
+// variable
+let state;
+let district;
+let api_link;
+let tbody;
+let dtObj;
+let date;
+let age;
+let dose;
+let jsobj;
+const music = new Audio("https://www.dropbox.com/s/lelq91cxaa0mwcm/music.mp3?raw=1");
+let stop;
+let times = 0;
+let check = true;
+
+// get states
+
+function getState() {
+    let link = "https://cdn-api.co-vin.in/api/v2/admin/location/states";
+    let req = new XMLHttpRequest();
+    req.open("GET", link, true);
+    req.send();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            let jsobj = JSON.parse(req.responseText);
+            // console.log(jsobj);
+            for (let i = 0; i < jsobj.states.length; i++) {
+                let opt = document.createElement("OPTION");
+                opt.setAttribute("value", jsobj.states[i].state_id);
+                let name = document.createTextNode(jsobj.states[i].state_name);
+                opt.appendChild(name);
+                document.getElementById("state").appendChild(opt);
+            }
+
+        }
+    };
+}
+
+// get district
+
+function getDistrict(statecode) {
+    document.getElementById("district").innerHTML = "<option value='0'>Select District</option>";
+
+    let link = "https://cdn-api.co-vin.in/api/v2/admin/location/districts/" + statecode;
+    let req = new XMLHttpRequest();
+    req.open("GET", link, true);
+    req.send();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            let jsobj = JSON.parse(req.responseText);
+            // console.log(jsobj)
+            for (let i = 0; i < jsobj.districts.length; i++) {
+                let opt = document.createElement("OPTION");
+                opt.setAttribute("value", jsobj.districts[i].district_id);
+                let name = document.createTextNode(jsobj.districts[i].district_name);
+                opt.appendChild(name);
+                document.getElementById("district").appendChild(opt);
+            }
+
+        }
+    };
+}
+
+
+// validation
+
+function search() {
+    state = document.getElementById("state").value;
+    district = document.getElementById("district").value;
+    dtObj = new Date(document.getElementById("date").value);
+    date = dtObj.getDate() + "-" + (dtObj.getMonth() + 1) + "-" + dtObj.getFullYear();
+    console.log(typeof (date) + " , " + date);
+    age = document.getElementById("age").value;
+    dose = document.getElementById("dose").value;
+
+    console.log(age, dose);
+    tbody = document.getElementById("data");
+    api_link = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/findByDistrict?district_id=" + district + "&date=" + date;
+    console.log(state);
+    console.log(district);
+    if (state == 0 || district == 0 || age == 0 || dose == 0 || date === "NaN-NaN-NaN") {
+        alert("Plese select State, District, age, dose and Date");
+    }
+    else {
+        if (check) {
+            document.getElementById("search").classList.add("d-none");
+            document.getElementById("stop").classList.remove("d-none");
+            fetch_data();
+            stop = setInterval(fetch_data, 20000); //fetch data after every 20 sec
+            check=false;
+        }
+    }
+}
+
+// get data
+
+function fetch_data() {
+    tbody.innerHTML = "";
+    times++;
+    document.getElementById("loader").classList.remove("d-none"); //show spinner
+    document.getElementById("times").innerHTML = "Search " + times + " times" //how many times search
+    let req = new XMLHttpRequest();
+    req.open("GET", api_link, true);
+    req.send();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            jsobj = JSON.parse(req.responseText);
+            console.log(jsobj);
+            if (jsobj.sessions.length == 0) {
+                document.getElementById("result").innerHTML = "NO Slot Available"
+            }
+            else {
+                if (dose == 1)
+                    printData_dose1();
+                else if (dose == 2)
+                    printData_dose2();
+            }
+            document.getElementById("loader").classList.add("d-none"); //hide spinner after data print
+        }
+
+    };
+}
+
+
+// print data dose 1
+
+function printData_dose1() {
+
+    document.getElementById("result").innerHTML = "Available Slots";
+    let flag = true;
+    for (let i = 0; i < jsobj.sessions.length; i++) {
+        if ((jsobj.sessions[i].min_age_limit == age || jsobj.sessions[i].allow_all_age === true) && jsobj.sessions[i].available_capacity_dose1 > 0) {
+            flag = false;
+            let row = document.createElement("tr");
+            //1
+            row.appendChild(create_td(jsobj.sessions[i].name + " (" + jsobj.sessions[i].pincode + ")"));
+            // 2
+            row.appendChild(create_td(jsobj.sessions[i].fee_type));
+
+            // 3
+            row.appendChild(create_td(jsobj.sessions[i].vaccine));
+            // 4
+            row.appendChild(create_td(jsobj.sessions[i].available_capacity_dose1));
+
+            tbody.appendChild(row);
+        }
+    }
+    if (flag) {
+        document.getElementById("result").innerHTML = "NO Slot Available"
+    }
+    else {
+        music.play();
+    }
+}
+
+
+
+// print data dose 2
+
+function printData_dose2() {
+
+    document.getElementById("result").innerHTML = "Available Slots";
+    let flag = true;
+    for (let i = 0; i < jsobj.sessions.length; i++) {
+        if ((jsobj.sessions[i].min_age_limit == age || jsobj.sessions[i].allow_all_age === true) && jsobj.sessions[i].available_capacity_dose2 > 0) {
+            flag = false;
+            let row = document.createElement("tr");
+            //1
+            row.appendChild(create_td(jsobj.sessions[i].name + " (" + jsobj.sessions[i].pincode + ")"));
+            // 2
+            row.appendChild(create_td(jsobj.sessions[i].fee_type));
+
+            // 3
+            row.appendChild(create_td(jsobj.sessions[i].vaccine));
+            // 4
+            row.appendChild(create_td(jsobj.sessions[i].available_capacity_dose2));
+
+            tbody.appendChild(row);
+        }
+    }
+    if (flag) {
+        document.getElementById("result").innerHTML = "NO Slot Available"
+    }
+    else {
+        music.play();
+    }
+}
+
+// create td 
+
+function create_td(data) {
+    let cell = document.createElement("td");
+    let cellText = document.createTextNode(data);
+    cell.appendChild(cellText);
+
+    return (cell);
+}
+
+// stop
+function stop_all() {
+    clearInterval(stop);
+    document.getElementById("search").classList.remove("d-none");
+    document.getElementById("stop").classList.add("d-none");
+    times = 0;
+    check=true;
+}
