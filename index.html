@@ -78,7 +78,8 @@
                         </div>
                         <div class="text-center">
                             <button onclick="search()" type="button" class="btn btn-primary" id="search">search</button>
-                            <button onclick="stop_all()" type="button" class="btn btn-warning d-none" id="stop">Stop</button>
+                            <button onclick="stop_all()" type="button" class="btn btn-warning d-none"
+                                id="stop">Stop</button>
                             <!-- spinner -->
                             <div class="spinner-border text-dark d-none" id="loader">
                                 <span class="visually-hidden">Loading...</span>
@@ -95,23 +96,13 @@
 
     <!-- show data start -->
 
-    <div class="container-fluid px-3">
+    <div class="container">
         <h1 id="result" class="text-center">Available Slots</h1>
-        <div class="table-responsive-lg">
-            <table class="table table-striped table-hover ">
-                <thead>
-                    <tr>
-                        <th scope="col">Center Name</th>
-                        <th scope="col">Fees</th>
-                        <th scope="col">Vaccine</th>
-                        <th scope="col">Slots</th>
-                    </tr>
-                </thead>
-                <tbody id="data">
+        <div class="row justify-content-center mx-1" id="data">
 
-                </tbody>
-            </table>
+           
         </div>
+
     </div>
 
     <!-- show data end -->
@@ -129,7 +120,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    This website use Co-WIN Public API for find Vaccine slot easily.Searches every 20 seconds After click search button.<br>
+                    This website use Co-WIN Public API for find Vaccine slot easily.Searches every 20 seconds After
+                    click search button.<br>
                     <a class="text-decoration-none" href="https://apisetu.gov.in/public/marketplace/api/cowin"
                         target="_blank">Co-WIN API</a><br>
                     <span class="h6">Developed by :<a href="https://www.instagram.com/__priyanshu_gupta?r=nametag"
