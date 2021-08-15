@@ -135,18 +135,15 @@ function printData_dose1() {
     for (let i = 0; i < jsobj.sessions.length; i++) {
         if ((jsobj.sessions[i].min_age_limit == age || jsobj.sessions[i].allow_all_age === true) && jsobj.sessions[i].available_capacity_dose1 > 0) {
             flag = false;
-            let row = document.createElement("tr");
-            //1
-            row.appendChild(create_td(jsobj.sessions[i].name + " (" + jsobj.sessions[i].pincode + ")"));
-            // 2
-            row.appendChild(create_td(jsobj.sessions[i].fee_type));
+            let name=`${jsobj.sessions[i].name}`;
+            let address=`${jsobj.sessions[i].address} ,${jsobj.sessions[i].pincode}`;
+            let vaccineType=`${jsobj.sessions[i].vaccine}`;
+            let fee=`${jsobj.sessions[i].fee_type}`;
+            let slot=jsobj.sessions[i].available_capacity_dose1;
+            let dose="Dose 1";
+            let card=create_card(name,address,vaccineType,fee,slot,dose);
 
-            // 3
-            row.appendChild(create_td(jsobj.sessions[i].vaccine));
-            // 4
-            row.appendChild(create_td(jsobj.sessions[i].available_capacity_dose1));
-
-            tbody.appendChild(row);
+            tbody.appendChild(card);
         }
     }
     if (flag) {
@@ -168,18 +165,14 @@ function printData_dose2() {
     for (let i = 0; i < jsobj.sessions.length; i++) {
         if ((jsobj.sessions[i].min_age_limit == age || jsobj.sessions[i].allow_all_age === true) && jsobj.sessions[i].available_capacity_dose2 > 0) {
             flag = false;
-            let row = document.createElement("tr");
-            //1
-            row.appendChild(create_td(jsobj.sessions[i].name + " (" + jsobj.sessions[i].pincode + ")"));
-            // 2
-            row.appendChild(create_td(jsobj.sessions[i].fee_type));
-
-            // 3
-            row.appendChild(create_td(jsobj.sessions[i].vaccine));
-            // 4
-            row.appendChild(create_td(jsobj.sessions[i].available_capacity_dose2));
-
-            tbody.appendChild(row);
+            let name=`${jsobj.sessions[i].name}`;
+            let address=`${jsobj.sessions[i].address} ,${jsobj.sessions[i].pincode}`;
+            let vaccineType=`${jsobj.sessions[i].vaccine}`;
+            let fee=`${jsobj.sessions[i].fee_type}`;
+            let slot=jsobj.sessions[i].available_capacity_dose2;
+            let dose="Dose 2";
+            let card=create_card(name,address,vaccineType,fee,slot,dose);
+            tbody.appendChild(card);
         }
     }
     if (flag) {
@@ -190,14 +183,38 @@ function printData_dose2() {
     }
 }
 
-// create td 
+// create card 
 
-function create_td(data) {
-    let cell = document.createElement("td");
-    let cellText = document.createTextNode(data);
-    cell.appendChild(cellText);
+function create_card(name,address,vaccineType,fee,slot,dose) {
+    let card,h6,p,span;
+    card=document.createElement("div");
+    card.classList.add("col-md-5","border","border-secondary","rounded","m-sm-2","mb-3");
+    h6=document.createElement("h6");
+    h6.classList.add("mt-1","text-uppercase")
+    h6.append(document.createTextNode(name));
+    card.appendChild(h6);
 
-    return (cell);
+    p=document.createElement("p");
+    p.appendChild(document.createTextNode(address));
+    card.appendChild(p);
+
+    p=document.createElement("p");
+    p.appendChild(document.createTextNode(vaccineType+" "));
+    span= document.createElement("span");
+    span.classList.add("bg-success", "p-1","rounded", "text-white");
+    span.appendChild(document.createTextNode(fee));
+    p.appendChild(span);
+    card.appendChild(p);
+    
+    p=document.createElement("p");
+    p.appendChild(document.createTextNode(dose+" "));
+    span= document.createElement("span");
+    span.classList.add("bg-primary","p-1","rounded","text-white");
+    span.appendChild(document.createTextNode(slot+" slots"));
+    p.appendChild(span);
+    card.appendChild(p)
+
+    return (card);
 }
 
 // stop
