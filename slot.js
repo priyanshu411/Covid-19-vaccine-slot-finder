@@ -188,7 +188,7 @@ function printData_dose2() {
 function create_card(name,address,vaccineType,fee,slot,dose) {
     let card,h6,p,span;
     card=document.createElement("div");
-    card.classList.add("col-md-5","border","border-secondary","rounded","m-sm-2","mb-3");
+    card.classList.add("col-md-5","border","border-secondary","rounded","m-sm-2","mb-3","shadow");
     h6=document.createElement("h6");
     h6.classList.add("mt-1","text-uppercase","d-inline-block","bg-info","text-white","rounded","p-1");
     h6.append(document.createTextNode(name));
