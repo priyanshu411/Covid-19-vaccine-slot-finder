@@ -91,7 +91,7 @@ function search() {
             document.getElementById("stop").classList.remove("d-none");
             fetch_data();
             stop = setInterval(fetch_data, 20000); //fetch data after every 20 sec
-            check=false;
+            check = false;
         }
     }
 }
@@ -133,15 +133,15 @@ function printData_dose1() {
     document.getElementById("result").innerHTML = "Available Slots";
     let flag = true;
     for (let i = 0; i < jsobj.sessions.length; i++) {
-        if ((jsobj.sessions[i].min_age_limit == age || jsobj.sessions[i].allow_all_age === true) && jsobj.sessions[i].available_capacity_dose1 > 0) {
+        if (((jsobj.sessions[i].min_age_limit == age || (jsobj.sessions[i].min_age_limit == age && jsobj.sessions[i].allow_all_age === true)) && jsobj.sessions[i].available_capacity_dose1 > 0)) {
             flag = false;
-            let name=`${jsobj.sessions[i].name}`;
-            let address=`${jsobj.sessions[i].address} ,${jsobj.sessions[i].pincode}`;
-            let vaccineType=`${jsobj.sessions[i].vaccine}`;
-            let fee=`${jsobj.sessions[i].fee_type}`;
-            let slot=jsobj.sessions[i].available_capacity_dose1;
-            let dose="Dose 1";
-            let card=create_card(name,address,vaccineType,fee,slot,dose);
+            let name = `${jsobj.sessions[i].name}`;
+            let address = `${jsobj.sessions[i].address} ,${jsobj.sessions[i].pincode}`;
+            let vaccineType = `${jsobj.sessions[i].vaccine}`;
+            let fee = `${jsobj.sessions[i].fee_type}`;
+            let slot = jsobj.sessions[i].available_capacity_dose1;
+            let dose = "Dose 1";
+            let card = create_card(name, address, vaccineType, fee, slot, dose);
 
             tbody.appendChild(card);
         }
@@ -163,15 +163,15 @@ function printData_dose2() {
     document.getElementById("result").innerHTML = "Available Slots";
     let flag = true;
     for (let i = 0; i < jsobj.sessions.length; i++) {
-        if ((jsobj.sessions[i].min_age_limit == age || jsobj.sessions[i].allow_all_age === true) && jsobj.sessions[i].available_capacity_dose2 > 0) {
+        if (((jsobj.sessions[i].min_age_limit == age || (jsobj.sessions[i].min_age_limit == age && jsobj.sessions[i].allow_all_age === true)) && jsobj.sessions[i].available_capacity_dose2 > 0)) {
             flag = false;
-            let name=`${jsobj.sessions[i].name}`;
-            let address=`${jsobj.sessions[i].address} ,${jsobj.sessions[i].pincode}`;
-            let vaccineType=`${jsobj.sessions[i].vaccine}`;
-            let fee=`${jsobj.sessions[i].fee_type}`;
-            let slot=jsobj.sessions[i].available_capacity_dose2;
-            let dose="Dose 2";
-            let card=create_card(name,address,vaccineType,fee,slot,dose);
+            let name = `${jsobj.sessions[i].name}`;
+            let address = `${jsobj.sessions[i].address} ,${jsobj.sessions[i].pincode}`;
+            let vaccineType = `${jsobj.sessions[i].vaccine}`;
+            let fee = `${jsobj.sessions[i].fee_type}`;
+            let slot = jsobj.sessions[i].available_capacity_dose2;
+            let dose = "Dose 2";
+            let card = create_card(name, address, vaccineType, fee, slot, dose);
             tbody.appendChild(card);
         }
     }
@@ -185,32 +185,32 @@ function printData_dose2() {
 
 // create td 
 
-function create_card(name,address,vaccineType,fee,slot,dose) {
-    let card,h6,p,span;
-    card=document.createElement("div");
-    card.classList.add("col-md-5","border","border-secondary","rounded","m-sm-2","mb-3","shadow");
-    h6=document.createElement("h6");
-    h6.classList.add("mt-1","text-uppercase","d-inline-block","bg-info","text-white","rounded","p-1");
+function create_card(name, address, vaccineType, fee, slot, dose) {
+    let card, h6, p, span;
+    card = document.createElement("div");
+    card.classList.add("col-md-5", "border", "border-secondary", "rounded", "m-sm-2", "mb-3", "shadow");
+    h6 = document.createElement("h6");
+    h6.classList.add("mt-1", "text-uppercase", "d-inline-block", "bg-info", "text-white", "rounded", "p-1");
     h6.append(document.createTextNode(name));
     card.appendChild(h6);
 
-    p=document.createElement("p");
+    p = document.createElement("p");
     p.appendChild(document.createTextNode(address));
     card.appendChild(p);
 
-    p=document.createElement("p");
-    p.appendChild(document.createTextNode(vaccineType+" "));
-    span= document.createElement("span");
-    span.classList.add("bg-success", "p-1","rounded", "text-white");
+    p = document.createElement("p");
+    p.appendChild(document.createTextNode(vaccineType + " "));
+    span = document.createElement("span");
+    span.classList.add("bg-success", "p-1", "rounded", "text-white");
     span.appendChild(document.createTextNode(fee));
     p.appendChild(span);
     card.appendChild(p);
-    
-    p=document.createElement("p");
-    p.appendChild(document.createTextNode(dose+" "));
-    span= document.createElement("span");
-    span.classList.add("bg-primary","p-1","rounded","text-white");
-    span.appendChild(document.createTextNode(slot+" slots"));
+
+    p = document.createElement("p");
+    p.appendChild(document.createTextNode(dose + " "));
+    span = document.createElement("span");
+    span.classList.add("bg-primary", "p-1", "rounded", "text-white");
+    span.appendChild(document.createTextNode(slot + " slots"));
     p.appendChild(span);
     card.appendChild(p)
 
@@ -223,5 +223,5 @@ function stop_all() {
     document.getElementById("search").classList.remove("d-none");
     document.getElementById("stop").classList.add("d-none");
     times = 0;
-    check=true;
+    check = true;
 }
