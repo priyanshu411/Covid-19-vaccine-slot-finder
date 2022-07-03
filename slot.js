@@ -1,6 +1,5 @@
 "use strict";
 window.onload = getState();
-alert("Searches every 20 seconds After click search button");
 
 // variable
 let state;
@@ -133,7 +132,7 @@ function printData_dose1() {
     document.getElementById("result").innerHTML = "Available Slots";
     let flag = true;
     for (let i = 0; i < jsobj.sessions.length; i++) {
-        if (((jsobj.sessions[i].min_age_limit == age || (jsobj.sessions[i].min_age_limit == age && jsobj.sessions[i].allow_all_age === true)) && jsobj.sessions[i].available_capacity_dose1 > 0)) {
+        if ((jsobj.sessions[i].min_age_limit==age || (jsobj.sessions[i].allow_all_age === true && age>=jsobj.sessions[i].min_age_limit)) && jsobj.sessions[i].available_capacity_dose1 > 0) {
             flag = false;
             let name = `${jsobj.sessions[i].name}`;
             let address = `${jsobj.sessions[i].address} ,${jsobj.sessions[i].pincode}`;
@@ -163,7 +162,7 @@ function printData_dose2() {
     document.getElementById("result").innerHTML = "Available Slots";
     let flag = true;
     for (let i = 0; i < jsobj.sessions.length; i++) {
-        if (((jsobj.sessions[i].min_age_limit == age || (jsobj.sessions[i].min_age_limit == age && jsobj.sessions[i].allow_all_age === true)) && jsobj.sessions[i].available_capacity_dose2 > 0)) {
+        if ((jsobj.sessions[i].min_age_limit==age || (jsobj.sessions[i].allow_all_age === true && age>= jsobj.sessions[i].min_age_limit)) && jsobj.sessions[i].available_capacity_dose2 > 0) {
             flag = false;
             let name = `${jsobj.sessions[i].name}`;
             let address = `${jsobj.sessions[i].address} ,${jsobj.sessions[i].pincode}`;
